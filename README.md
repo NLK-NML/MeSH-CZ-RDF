@@ -1,6 +1,6 @@
 # MeSH-CZ-RDF
 
-Czech translation of Medical Subject Headings published as RDF N-triples
+Czech translation of [Medical Subject Headings](https://www.nlm.nih.gov/mesh/meshhome.html) published as RDF N-triples
 
 ## License
 

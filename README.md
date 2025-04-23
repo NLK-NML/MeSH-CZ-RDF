@@ -2,6 +2,8 @@
 
 Czech translation of [Medical Subject Headings](https://www.nlm.nih.gov/mesh/meshhome.html) published as RDF N-triples
 
+For a specific annual version see the YYYY subdirectories - ie. [2025](https://github.com/NLK-NML/MeSH-CZ-RDF/tree/main/2025)
+
 ## License
 
 [MeSH-CZ-RDF](https://github.com/NLK-NML/MeSH-CZ-RDF) © 2025- by [National Medical Library](https://nlk.cz) 

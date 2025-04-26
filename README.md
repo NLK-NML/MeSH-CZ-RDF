@@ -6,6 +6,12 @@ For a specific annual version see the YYYY subdirectories in the repo root - ie.
 
 The MeSH-CZ RDF datasets are being published also at [Hugging Face NLK-NML](https://huggingface.co/collections/NLK-NML/mesh-cz-datasets-68010ee8885b764464194453) account.
 
+## Docs
+
+https://hhs.github.io/meshrdf/index.html
+
+https://github.com/filak/MTW-MeSH/wiki/RDF-MTW-Data-model
+
 ## License
 
 [MeSH-CZ-RDF](https://github.com/NLK-NML/MeSH-CZ-RDF) © 2025- by [National Medical Library](https://nlk.cz) 

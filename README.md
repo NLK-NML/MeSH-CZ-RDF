@@ -2,7 +2,7 @@
 
 Czech translation of [Medical Subject Headings](https://www.nlm.nih.gov/mesh/meshhome.html) published as RDF N-triples
 
-For a specific annual version see the YYYY subdirectories in the repo root - ie. [2025](https://github.com/NLK-NML/MeSH-CZ-RDF/tree/main/2025)
+For published annual versions check the [Releases](https://github.com/NLK-NML/MeSH-CZ-RDF/releases)
 
 The MeSH-CZ RDF datasets are being published also at [Hugging Face NLK-NML](https://huggingface.co/collections/NLK-NML/mesh-cz-datasets-68010ee8885b764464194453) account.
 

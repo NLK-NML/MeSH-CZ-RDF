@@ -9,6 +9,7 @@
 @prefix mesht:   <http://www.medvik.cz/schema/mesh/vocab/#> .
 
 ### Version 1.5.0 for Apache Jena version 5
+### Updated: 2025-05-06
 
 ## Initialize text query
 [] ja:loadClass       "org.apache.jena.query.text.TextQuery" .
@@ -168,16 +169,23 @@ text:TextIndexES    rdfs:subClassOf   text:TextIndex .
 ### Translation only:
 ## mesht:translatorsNote
 
-<#service_text_tdb>
+### TBD - secured access to Admin GUI
+#[] rdf:type fuseki:Server ;
+#   fuseki:services (
+#       <#meshcz_service>
+#   ) .
+
+
+<#meshcz_service>
     a fuseki:Service ;
-    rdfs:label                      "MeSH-Translation-service" ;
+    rdfs:label                      "MeSH-CZ-Query-service" ;
     fuseki:name                     "meshcz" ;
     fuseki:serviceQuery             "query" ;
     fuseki:serviceQuery             "sparql" ;
-    fuseki:serviceUpdate            "update" ;
-    fuseki:serviceUpload            "upload" ;
-    fuseki:serviceReadGraphStore    "get" ;
-    fuseki:serviceReadWriteGraphStore    "data" ;
+    #fuseki:serviceUpdate            "update" ;
+    #fuseki:serviceUpload            "upload" ;
+    #fuseki:serviceReadGraphStore    "get" ;
+    #fuseki:serviceReadWriteGraphStore    "data" ;
     fuseki:dataset                  :text_dataset ;
     .
 

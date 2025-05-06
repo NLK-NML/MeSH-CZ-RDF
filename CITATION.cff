@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "Please cite this software using these metadata."
 authors:
-- name: "National Library of Medicine (Czech Republic)"
+- name: "National Medical Library (Czech Republic)"
   url: "https://nlk.cz"
 title: "MeSH-CZ-RDF - Czech translation of Medical Subject Headings"
 date-released: 2025-05-06

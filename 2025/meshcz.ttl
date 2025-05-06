@@ -177,9 +177,9 @@ text:TextIndexES    rdfs:subClassOf   text:TextIndex .
 
 
 <#meshcz_service>
-    a fuseki:Service ;
+    rdf:type   fuseki:Service ;
     rdfs:label                      "MeSH-CZ-Query-service" ;
-    fuseki:name                     "meshcz" ;
+    fuseki:name                     "/meshcz" ;
     fuseki:serviceQuery             "query" ;
     fuseki:serviceQuery             "sparql" ;
     #fuseki:serviceUpdate            "update" ;

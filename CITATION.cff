@@ -4,7 +4,7 @@ authors:
 - name: "National Library of Medicine (Czech Republic)"
   url: "https://nlk.cz"
 title: "MeSH-CZ-RDF - Czech translation of Medical Subject Headings"
-date-released: 2025-04-22
+date-released: 2025-05-06
 license: "CC BY 4.0"
 repository-code: "https://github.com/NLK-NML/MeSH-CZ-RDF"
 url: "https://github.com/NLK-NML/MeSH-CZ-RDF" 

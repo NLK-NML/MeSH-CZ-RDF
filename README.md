@@ -4,6 +4,8 @@ Czech translation of [Medical Subject Headings](https://www.nlm.nih.gov/mesh/mes
 
 For published annual versions check the [Releases](https://github.com/NLK-NML/MeSH-CZ-RDF/releases)
 
+To try the MeSH-CZ datasets in action please see https://github.com/NLK-NML/MeSH-CZ-RDF-Docker
+
 The MeSH-CZ RDF datasets are being published also at [Hugging Face NLK-NML](https://huggingface.co/collections/NLK-NML/mesh-cz-datasets-68010ee8885b764464194453) account.
 
 ## Docs

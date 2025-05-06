@@ -52,7 +52,8 @@ text:TextIndexES    rdfs:subClassOf   text:TextIndex .
            )
        ] ;
     ## text:queryAnalyzer [ a text:KeywordAnalyzer ] ;
-    text:queryParser text:AnalyzingQueryParser ;
+	### Deprecated:
+    # text:queryParser text:AnalyzingQueryParser ;
     ## text:defineAnalyzers [ . . . ] ;
     text:multilingualSupport true ;
     ## https://jena.apache.org/documentation/query/text-query.html#lists-of-indexed-properties - available since Jena 5.0
@@ -169,23 +170,19 @@ text:TextIndexES    rdfs:subClassOf   text:TextIndex .
 ### Translation only:
 ## mesht:translatorsNote
 
+#[] rdf:type fuseki:Server .
+
 ### TBD - secured access to Admin GUI
-#[] rdf:type fuseki:Server ;
-#   fuseki:services (
-#       <#meshcz_service>
-#   ) .
+[] rdf:type fuseki:Server ;
+   fuseki:services (
+       <#meshcz_service>
+   ) .
 
 
-<#meshcz_service>
-    rdf:type   fuseki:Service ;
-    rdfs:label                      "MeSH-CZ-Query-service" ;
-    fuseki:name                     "/meshcz" ;
-    fuseki:serviceQuery             "query" ;
-    fuseki:serviceQuery             "sparql" ;
-    #fuseki:serviceUpdate            "update" ;
-    #fuseki:serviceUpload            "upload" ;
-    #fuseki:serviceReadGraphStore    "get" ;
-    #fuseki:serviceReadWriteGraphStore    "data" ;
-    fuseki:dataset                  :text_dataset ;
+<#meshcz_service> rdf:type   fuseki:Service ;
+	fuseki:name     "meshcz" ;
+    fuseki:endpoint [ fuseki:operation fuseki:query ; ];
+    fuseki:endpoint [ fuseki:operation fuseki:query ; fuseki:name "sparql" ];
+    fuseki:dataset  :text_dataset ;
     .
 

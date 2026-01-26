@@ -1,5 +1,5 @@
 ### Conversion of MeSH *base* dataset [with translation] to SKOS dataset
-##  - version 1.0.7 2026-01-25
+##  - version 1.0.8 2026-01-26
 ## Run the query - using either method:
 # a. Copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
 #  tdb2_tdbquery --loc=databases/mesh --query=mesh-base-to-skos.rq --time > mesh-skos-base.ttl
@@ -23,11 +23,13 @@ CONSTRUCT {
      skos:changeNote ?previousIndexing ;
      skos:exactMatch ?exactMatch ;
      skos:inScheme mesh: ;
-	 skos:topConceptOf ?scheme ;
-     meshv:allowableQualifier ?q .
+	 skos:notation ?treeNo ;
+	 skos:definition ?qlabel, ?qtlabel ;
+	 skos:topConceptOf ?scheme .
+
 
   ?scheme a skos:ConceptScheme ;
-          skos:prefLabel "Medical Subject Headings CZ 2026"@en ;
+          skos:prefLabel "Medical Subject Headings 2026 CZ"@en ;
           skos:hasTopConcept ?d .
 }
 WHERE {
@@ -60,16 +62,14 @@ WHERE {
   OPTIONAL { ?c mesht:preferredTerm ?ptt .
              ?ptt mesht:prefLabel ?tplabel }
 
-  OPTIONAL { ?d meshv:allowableQualifier ?q }
+  OPTIONAL { ?d meshv:allowableQualifier ?q .
+             ?q meshv:preferredTerm ?qt .
+			 ?qt meshv:prefLabel ?qlabel }
 
-  OPTIONAL {
-    FILTER (?type != meshv:Qualifier)
-    ?d meshv:treeNumber ?tn .
-    ?tn rdfs:label ?treeNumber .
-    FILTER (STRLEN(?treeNumber) = 3)
-	FILTER NOT EXISTS { ?d meshv:broaderDescriptor ?brd }
-    BIND(mesh: AS ?scheme)
-  }
+  OPTIONAL { ?d meshv:allowableQualifier ?q .
+             ?q meshv:preferredConcept ?qc .
+			 ?qc mesht:preferredTerm ?qtt .
+			 ?qtt mesht:prefLabel ?qtlabel }
 
   # Hierarchy
   OPTIONAL { ?d meshv:broaderDescriptor ?broader }
@@ -81,5 +81,21 @@ WHERE {
   OPTIONAL { ?d meshv:seeAlso ?related }
 
   OPTIONAL { ?d meshv:previousIndexing ?previousIndexing }
+
+  OPTIONAL {
+    FILTER (?type != meshv:Qualifier)
+    ?d meshv:treeNumber ?tn .
+    ?tn rdfs:label ?treeNumber .
+    FILTER (STRLEN(?treeNumber) = 3)
+	FILTER NOT EXISTS { ?d meshv:broaderDescriptor ?brd }
+    BIND(mesh: AS ?scheme)
+  }
+
+  OPTIONAL {
+    FILTER (?type != meshv:Qualifier)
+    ?d meshv:treeNumber ?tn .
+    ?tn rdfs:label ?treeNo
+  }
+
 }
 #LIMIT 10000

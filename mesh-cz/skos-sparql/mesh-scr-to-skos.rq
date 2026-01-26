@@ -1,5 +1,5 @@
 ### Conversion of MeSH *SCR* dataset [with translation] to SKOS dataset
-##  - version 1.0.5 2026-01-19
+##  - version 1.0.6 2026-01-26
 ## Run the query - using either method:
 # a. Copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
 #  tdb2_tdbquery --loc=databases/mesh --query=mesh-scr-to-skos.rq --time > mesh-skos-scr.ttl
@@ -15,7 +15,10 @@ PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
 
 CONSTRUCT {
-  ?d skos:hiddenLabel ?pterm .
+  ?d skos:hiddenLabel ?plabel .
+  ?d skos:hiddenLabel ?alabel .
+  ?d skos:hiddenLabel ?tlabel .
+  ?d skos:hiddenLabel ?talabel .
 }
 WHERE {
   VALUES ?type {
@@ -31,9 +34,17 @@ WHERE {
   ?sc meshv:preferredConcept ?c .
   ?sc meshv:preferredMappedTo ?d .
   FILTER NOT EXISTS { ?d meshv:active false }
+  FILTER NOT EXISTS { ?c meshv:active false }
 
-  ?c meshv:term ?pt .
-  ?pt meshv:prefLabel ?pterm
+  ?c meshv:preferredTerm ?pt .
+  ?pt meshv:prefLabel ?plabel .
 
+  OPTIONAL { ?pt meshv:altLabel ?alabel }
+
+  OPTIONAL {   ?c meshv:term ?ptt .
+                ?ptt meshv:prefLabel ?tlabel }
+
+  OPTIONAL { ?c meshv:term ?ptt .
+              ?pt meshv:altLabel ?talabel }
 }
 #LIMIT 10000

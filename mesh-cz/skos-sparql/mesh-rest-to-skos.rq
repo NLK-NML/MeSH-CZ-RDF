@@ -1,5 +1,5 @@
 ### Conversion of MeSH *rest* dataset [with translation] to SKOS dataset
-##  - version 1.0.5 2026-01-19
+##  - version 1.0.6 2026-01-26
 ## Run the query - using either method:
 # a. Copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
 #  tdb2_tdbquery --loc=databases/mesh --query=mesh-rest-to-skos.rq --time > mesh-skos-rest.ttl
@@ -21,6 +21,9 @@ CONSTRUCT {
   ?d skos:altLabel ?label .
   ?d skos:altLabel ?tlabel .
 
+  ?d skos:hiddenLabel ?hlabel .
+  ?d skos:hiddenLabel ?hrlabel .
+
   ?d skos:scopeNote ?scopeNote .
   ?d skos:scopeNote ?tscopeNote .
 
@@ -35,7 +38,7 @@ CONSTRUCT {
 }
 WHERE {
   # Bind the descriptor for testing
-  #BIND(mesh:D005123 AS ?d)
+  #BIND(mesh:D002670 AS ?d)
   #BIND(mesh:D018153 AS ?d)
   #BIND(mesh:D004232 AS ?d)
   #BIND(mesh:Q000453 AS ?d)
@@ -56,6 +59,9 @@ WHERE {
   OPTIONAL { ?c meshv:term ?t .
              ?t meshv:prefLabel ?label }
 
+  OPTIONAL { ?c meshv:term ?t .
+             ?t meshv:altLabel ?hlabel }
+
   OPTIONAL { ?c mesht:preferredTerm ?ptt .
              ?ptt mesht:prefLabel ?tplabel }
 
@@ -73,6 +79,16 @@ WHERE {
     {
       ?cc meshv:term ?rc .
       ?rc meshv:prefLabel ?rlabel .
+    }
+
+    {
+      ?cc meshv:preferredTerm ?rc .
+      ?rc meshv:altLabel ?hrlabel .
+    }
+    UNION
+    {
+      ?cc meshv:term ?rc .
+      ?rc meshv:altLabel ?hrlabel .
     }
 
     {
@@ -115,5 +131,6 @@ WHERE {
   # History notes
   OPTIONAL { ?d meshv:historyNote ?historyNote }
   OPTIONAL { ?d mesht:historyNote ?thistoryNote }
+
 }
 #LIMIT 10000

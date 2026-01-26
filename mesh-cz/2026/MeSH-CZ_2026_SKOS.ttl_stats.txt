@@ -1,21 +1,22 @@
-------------------------------------------------------------------
-| p                                                     | count  |
-==================================================================
-| <http://id.nlm.nih.gov/mesh/vocab#allowableQualifier> | 633885 |
-| <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>     | 62373  |
-| <http://www.w3.org/2004/02/skos/core#altLabel>        | 172846 |
-| <http://www.w3.org/2004/02/skos/core#broader>         | 42585  |
-| <http://www.w3.org/2004/02/skos/core#changeNote>      | 27397  |
-| <http://www.w3.org/2004/02/skos/core#editorialNote>   | 72     |
-| <http://www.w3.org/2004/02/skos/core#exactMatch>      | 31186  |
-| <http://www.w3.org/2004/02/skos/core#hasTopConcept>   | 110    |
-| <http://www.w3.org/2004/02/skos/core#hiddenLabel>     | 368956 |
-| <http://www.w3.org/2004/02/skos/core#historyNote>     | 27200  |
-| <http://www.w3.org/2004/02/skos/core#inScheme>        | 31186  |
-| <http://www.w3.org/2004/02/skos/core#narrower>        | 42681  |
-| <http://www.w3.org/2004/02/skos/core#note>            | 15315  |
-| <http://www.w3.org/2004/02/skos/core#prefLabel>       | 62374  |
-| <http://www.w3.org/2004/02/skos/core#related>         | 9213   |
-| <http://www.w3.org/2004/02/skos/core#scopeNote>       | 56015  |
-| <http://www.w3.org/2004/02/skos/core#topConceptOf>    | 110    |
-------------------------------------------------------------------
+-----------------------------------------------------------------
+| p                                                   | count   |
+=================================================================
+| <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>   | 62373   |
+| <http://www.w3.org/2004/02/skos/core#altLabel>      | 146537  |
+| <http://www.w3.org/2004/02/skos/core#broader>       | 42585   |
+| <http://www.w3.org/2004/02/skos/core#changeNote>    | 27397   |
+| <http://www.w3.org/2004/02/skos/core#definition>    | 1267770 |
+| <http://www.w3.org/2004/02/skos/core#editorialNote> | 72      |
+| <http://www.w3.org/2004/02/skos/core#exactMatch>    | 31186   |
+| <http://www.w3.org/2004/02/skos/core#hasTopConcept> | 110     |
+| <http://www.w3.org/2004/02/skos/core#hiddenLabel>   | 851898  |
+| <http://www.w3.org/2004/02/skos/core#historyNote>   | 27200   |
+| <http://www.w3.org/2004/02/skos/core#inScheme>      | 31186   |
+| <http://www.w3.org/2004/02/skos/core#narrower>      | 42681   |
+| <http://www.w3.org/2004/02/skos/core#notation>      | 65360   |
+| <http://www.w3.org/2004/02/skos/core#note>          | 15314   |
+| <http://www.w3.org/2004/02/skos/core#prefLabel>     | 62373   |
+| <http://www.w3.org/2004/02/skos/core#related>       | 9213    |
+| <http://www.w3.org/2004/02/skos/core#scopeNote>     | 56015   |
+| <http://www.w3.org/2004/02/skos/core#topConceptOf>  | 110     |
+-----------------------------------------------------------------

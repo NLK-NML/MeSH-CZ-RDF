@@ -1,5 +1,5 @@
 ### Conversion of MeSH *base* dataset [with translation] to SKOS dataset
-##  - version 1.0.8 2026-01-26
+##  - version 1.0.6 2026-01-20
 ## Run the query - using either method:
 # a. Copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
 #  tdb2_tdbquery --loc=databases/mesh --query=mesh-base-to-skos.rq --time > mesh-skos-base.ttl
@@ -7,34 +7,41 @@
 # b. Copy this file to a dir where the MeSH nq gzipped dataset is located and run:
 #  arq --query=mesh-base-to-skos.rq --data=mesh-cz.nq.gz --time > mesh-skos-base.ttl
 #
-PREFIX mesh:  <http://id.nlm.nih.gov/mesh/>
-PREFIX meshv: <http://id.nlm.nih.gov/mesh/vocab#>
-PREFIX mesht: <http://www.medvik.cz/schema/mesh/vocab/#>
-PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+PREFIX mesh:   <http://id.nlm.nih.gov/mesh/>
+PREFIX meshv:  <http://id.nlm.nih.gov/mesh/vocab#>
+PREFIX mesht:  <http://www.medvik.cz/schema/mesh/vocab/#>
+PREFIX meshcz: <http://mesh.medvik.cz/meshcz/>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
 
 CONSTRUCT {
+  # Descriptor triples
   ?d a skos:Concept, ?type ;
      skos:prefLabel ?plabel, ?tplabel ;
      skos:broader ?broader ;
+     skos:broader ?topConcept ;
      skos:narrower ?narrower ;
      skos:related ?related ;
      skos:changeNote ?previousIndexing ;
      skos:exactMatch ?exactMatch ;
      skos:inScheme mesh: ;
-	 skos:notation ?treeNo ;
-	 skos:definition ?qlabel, ?qtlabel ;
-	 skos:topConceptOf ?scheme .
+     skos:notation ?treeNo ;
+     skos:definition ?qlabel, ?qtlabel .
 
+  # Top-level category triples
+  ?topConcept a skos:Concept ;
+              skos:inScheme meshcz:scheme .
 
-  ?scheme a skos:ConceptScheme ;
-          skos:prefLabel "Medical Subject Headings 2026 CZ"@en ;
-          skos:hasTopConcept ?d .
+  # ConceptScheme triples
+  meshcz:scheme a skos:ConceptScheme ;
+        skos:prefLabel "Medical Subject Headings 2026 CZ"@en ;
+        skos:hasTopConcept ?topConcept .
 }
 WHERE {
+
   # Bind the descriptor for testing
-  #BIND(mesh:D005123 AS ?d)
+  #BIND(mesh:D001829 AS ?d)
   #BIND(mesh:D018153 AS ?d)
   #BIND(mesh:D004232 AS ?d)
   #BIND(mesh:Q000453 AS ?d)
@@ -47,29 +54,36 @@ WHERE {
     meshv:CheckTag
     meshv:Qualifier
   }
+
   ?d rdf:type ?type .
   FILTER NOT EXISTS { ?d meshv:active false }
   ?d meshv:preferredConcept ?c .
   FILTER NOT EXISTS { ?c meshv:active false }
   ?d meshv:identifier ?id .
 
-  # Exact match
+  # Exact match link
   BIND(IRI(CONCAT("https://www.medvik.cz/link/", ?id)) AS ?exactMatch)
 
+  # Preferred labels
   ?d meshv:preferredTerm ?pt .
   ?pt meshv:prefLabel ?plabel .
+  OPTIONAL {
+    ?c mesht:preferredTerm ?ptt .
+    ?ptt mesht:prefLabel ?tplabel
+  }
 
-  OPTIONAL { ?c mesht:preferredTerm ?ptt .
-             ?ptt mesht:prefLabel ?tplabel }
-
-  OPTIONAL { ?d meshv:allowableQualifier ?q .
-             ?q meshv:preferredTerm ?qt .
-			 ?qt meshv:prefLabel ?qlabel }
-
-  OPTIONAL { ?d meshv:allowableQualifier ?q .
-             ?q meshv:preferredConcept ?qc .
-			 ?qc mesht:preferredTerm ?qtt .
-			 ?qtt mesht:prefLabel ?qtlabel }
+  # Qualifiers
+  OPTIONAL {
+    ?d meshv:allowableQualifier ?q .
+    ?q meshv:preferredTerm ?qt .
+    ?qt meshv:prefLabel ?qlabel
+  }
+  OPTIONAL {
+    ?d meshv:allowableQualifier ?q .
+    ?q meshv:preferredConcept ?qc .
+    ?qc mesht:preferredTerm ?qtt .
+    ?qtt mesht:prefLabel ?qtlabel
+  }
 
   # Hierarchy
   OPTIONAL { ?d meshv:broaderDescriptor ?broader }
@@ -80,22 +94,28 @@ WHERE {
   # Related concepts
   OPTIONAL { ?d meshv:seeAlso ?related }
 
+  # Previous indexing
   OPTIONAL { ?d meshv:previousIndexing ?previousIndexing }
 
+  # Top-level category derivation
   OPTIONAL {
     FILTER (?type != meshv:Qualifier)
+
     ?d meshv:treeNumber ?tn .
     ?tn rdfs:label ?treeNumber .
     FILTER (STRLEN(?treeNumber) = 3)
-	FILTER NOT EXISTS { ?d meshv:broaderDescriptor ?brd }
-    BIND(mesh: AS ?scheme)
+    FILTER NOT EXISTS { ?d meshv:broaderDescriptor ?brd }
+
+    # Extract leading letter
+    BIND(SUBSTR(?treeNumber, 1, 1) AS ?topLetter)
+    BIND(IRI(CONCAT(STR(meshcz:), ?topLetter)) AS ?topConcept)
   }
 
+  # Tree number for notation
   OPTIONAL {
     FILTER (?type != meshv:Qualifier)
     ?d meshv:treeNumber ?tn .
     ?tn rdfs:label ?treeNo
   }
-
 }
 #LIMIT 10000

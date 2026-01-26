@@ -1,0 +1,85 @@
+### Conversion of MeSH *base* dataset [with translation] to SKOS dataset
+##  - version 1.0.7 2026-01-25
+## Run the query - using either method:
+# a. Copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
+#  tdb2_tdbquery --loc=databases/mesh --query=mesh-base-to-skos.rq --time > mesh-skos-base.ttl
+##  Or
+# b. Copy this file to a dir where the MeSH nq gzipped dataset is located and run:
+#  arq --query=mesh-base-to-skos.rq --data=mesh-cz.nq.gz --time > mesh-skos-base.ttl
+#
+PREFIX mesh:  <http://id.nlm.nih.gov/mesh/>
+PREFIX meshv: <http://id.nlm.nih.gov/mesh/vocab#>
+PREFIX mesht: <http://www.medvik.cz/schema/mesh/vocab/#>
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT {
+  ?d a skos:Concept, ?type ;
+     skos:prefLabel ?plabel, ?tplabel ;
+     skos:broader ?broader ;
+     skos:narrower ?narrower ;
+     skos:related ?related ;
+     skos:changeNote ?previousIndexing ;
+     skos:exactMatch ?exactMatch ;
+     skos:inScheme mesh: ;
+	 skos:topConceptOf ?scheme ;
+     meshv:allowableQualifier ?q .
+
+  ?scheme a skos:ConceptScheme ;
+          skos:prefLabel "Medical Subject Headings CZ 2026"@en ;
+          skos:hasTopConcept ?d .
+}
+WHERE {
+  # Bind the descriptor for testing
+  #BIND(mesh:D005123 AS ?d)
+  #BIND(mesh:D018153 AS ?d)
+  #BIND(mesh:D004232 AS ?d)
+  #BIND(mesh:Q000453 AS ?d)
+  #BIND(mesh:D001829 AS ?d)
+
+  VALUES ?type {
+    meshv:TopicalDescriptor
+    meshv:GeographicalDescriptor
+    meshv:PublicationType
+    meshv:CheckTag
+    meshv:Qualifier
+  }
+  ?d rdf:type ?type .
+  FILTER NOT EXISTS { ?d meshv:active false }
+  ?d meshv:preferredConcept ?c .
+  FILTER NOT EXISTS { ?c meshv:active false }
+  ?d meshv:identifier ?id .
+
+  # Exact match
+  BIND(IRI(CONCAT("https://www.medvik.cz/link/", ?id)) AS ?exactMatch)
+
+  ?d meshv:preferredTerm ?pt .
+  ?pt meshv:prefLabel ?plabel .
+
+  OPTIONAL { ?c mesht:preferredTerm ?ptt .
+             ?ptt mesht:prefLabel ?tplabel }
+
+  OPTIONAL { ?d meshv:allowableQualifier ?q }
+
+  OPTIONAL {
+    FILTER (?type != meshv:Qualifier)
+    ?d meshv:treeNumber ?tn .
+    ?tn rdfs:label ?treeNumber .
+    FILTER (STRLEN(?treeNumber) = 3)
+	FILTER NOT EXISTS { ?d meshv:broaderDescriptor ?brd }
+    BIND(mesh: AS ?scheme)
+  }
+
+  # Hierarchy
+  OPTIONAL { ?d meshv:broaderDescriptor ?broader }
+  OPTIONAL { ?d meshv:broaderQualifier ?broader }
+  OPTIONAL { ?narrower meshv:broaderDescriptor ?d }
+  OPTIONAL { ?narrower meshv:broaderQualifier ?d }
+
+  # Related concepts
+  OPTIONAL { ?d meshv:seeAlso ?related }
+
+  OPTIONAL { ?d meshv:previousIndexing ?previousIndexing }
+}
+#LIMIT 10000

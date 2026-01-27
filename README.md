@@ -1,6 +1,6 @@
 # MeSH-CZ-RDF
 
-Czech translation of [Medical Subject Headings](https://www.nlm.nih.gov/mesh/meshhome.html) published as RDF datasets.
+Czech translation of [Medical Subject Headings](https://www.nlm.nih.gov/mesh/meshhome.html) published as RDF datasets - raw RDF and SKOS
 
 Published annual MeSH-CZ versions are available here [tree/main/meshcz](https://github.com/NLK-NML/MeSH-CZ-RDF/tree/main/meshcz)
 

@@ -1,0 +1,53 @@
+### Conversion of MeSH *qualifiers* to SKOS format
+##  - version 1.0.1 2026-01-27
+## Run the query - using either method:
+# a. Copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
+#  tdb2_tdbquery --loc=databases/mesh --query=mesh-qual-to-skos.rq --time > mesh-skos-qual.ttl
+##  Or
+# b. Copy this file to a dir where the MeSH nq gzipped dataset is located and run:
+#  arq --query=mesh-qual-to-skos.rq --data=meshcz.nq.gz --time > mesh-skos-qual.ttl
+#
+PREFIX mesh:   <http://id.nlm.nih.gov/mesh/>
+PREFIX meshv:  <http://id.nlm.nih.gov/mesh/vocab#>
+PREFIX mesht:  <http://www.medvik.cz/schema/mesh/vocab/#>
+PREFIX meshcz: <http://mesh.medvik.cz/meshcz/>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT {
+     # skos:definition ?qlabel, ?qtlabel .
+     ?d meshcz:allowedQualifier ?q .
+}
+WHERE {
+
+  # Bind the descriptor for testing
+  #BIND(mesh:D001829 AS ?d)
+  #BIND(mesh:D018153 AS ?d)
+  #BIND(mesh:D004232 AS ?d)
+  #BIND(mesh:Q000453 AS ?d)
+  #BIND(mesh:D001829 AS ?d)
+
+  VALUES ?type {
+    meshv:TopicalDescriptor
+    meshv:GeographicalDescriptor
+    meshv:CheckTag
+  }
+
+  ?d rdf:type ?type .
+  FILTER NOT EXISTS { ?d meshv:active false }
+
+  # Qualifiers
+    ?d meshv:allowableQualifier ?q
+    FILTER NOT EXISTS { ?q meshv:active false }
+    # ?q meshv:preferredTerm ?qt .
+    # ?qt meshv:prefLabel ?qlabel
+
+  #   OPTIONAL { ?d meshv:allowableQualifier ?q .
+  #   FILTER NOT EXISTS { ?q meshv:active false }
+  #   ?q meshv:preferredConcept ?qc .
+  #   ?qc mesht:preferredTerm ?qtt .
+  #   ?qtt mesht:prefLabel ?qtlabel }
+
+}
+#LIMIT 10000

@@ -1,11 +1,11 @@
-### Conversion of MeSH *base* dataset [with translation] to SKOS dataset
+### Conversion of MeSH *base* to SKOS format
 ##  - version 1.1.0 2026-01-27
 ## Run the query - using either method:
 # a. Copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
 #  tdb2_tdbquery --loc=databases/mesh --query=mesh-base-to-skos.rq --time > mesh-skos-base.ttl
 ##  Or
 # b. Copy this file to a dir where the MeSH nq gzipped dataset is located and run:
-#  arq --query=mesh-base-to-skos.rq --data=mesh-cz.nq.gz --time > mesh-skos-base.ttl
+#  arq --query=mesh-base-to-skos.rq --data=meshcz.nq.gz --time > mesh-skos-base.ttl
 #
 PREFIX mesh:   <http://id.nlm.nih.gov/mesh/>
 PREFIX meshv:  <http://id.nlm.nih.gov/mesh/vocab#>
@@ -25,16 +25,14 @@ CONSTRUCT {
      skos:related ?related ;
      skos:changeNote ?previousIndexing ;
      skos:exactMatch ?exactMatch ;
-     skos:inScheme mesh: ;
-     skos:definition ?qlabel, ?qtlabel .
+     skos:notation ?treeNo ;
+     skos:inScheme mesh: .
 
   ?topConcept skos:narrower ?d .
 
-  meshcz:scheme a skos:ConceptScheme ;
-        skos:hasTopConcept ?topConcept .
-
   mesh: a skos:ConceptScheme ;
-        skos:prefLabel "Medical Subject Headings 2026 CZ"@en .
+        skos:prefLabel "Medical Subject Headings 2026 CZ"@en ;
+        skos:prefLabel "Medical Subject Headings 2026 CZ"@cs .
 }
 WHERE {
 
@@ -65,24 +63,17 @@ WHERE {
   # Preferred labels
   ?d meshv:preferredTerm ?pt .
   ?pt meshv:prefLabel ?plabel .
+
   OPTIONAL {
     ?c mesht:preferredTerm ?ptt .
     ?ptt mesht:prefLabel ?tplabel
   }
 
-  # Qualifiers
+  # Tree number for notation
   OPTIONAL {
-    ?d meshv:allowableQualifier ?q .
-    FILTER NOT EXISTS { ?q meshv:active false }
-    ?q meshv:preferredTerm ?qt .
-    ?qt meshv:prefLabel ?qlabel
-  }
-  OPTIONAL {
-    ?d meshv:allowableQualifier ?q .
-    FILTER NOT EXISTS { ?q meshv:active false }
-    ?q meshv:preferredConcept ?qc .
-    ?qc mesht:preferredTerm ?qtt .
-    ?qtt mesht:prefLabel ?qtlabel
+    ?d meshv:treeNumber ?tn .
+    FILTER NOT EXISTS { ?tn meshv:active false }
+    ?tn rdfs:label ?treeNo .
   }
 
   # Hierarchy

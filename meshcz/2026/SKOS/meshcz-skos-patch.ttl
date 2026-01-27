@@ -1,0 +1,158 @@
+# Custom MeSH patches
+PREFIX mesh:   <http://id.nlm.nih.gov/mesh/>
+PREFIX meshv:  <http://id.nlm.nih.gov/mesh/vocab#>
+PREFIX mesht:  <http://www.medvik.cz/schema/mesh/vocab/#>
+PREFIX meshcz: <http://mesh.medvik.cz/meshcz/>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
+
+meshcz:allowedQualifier
+    a rdf:Property ;
+    rdfs:subPropertyOf skos:related ;
+    rdfs:domain skos:Concept ;
+    rdfs:range  skos:Concept ;
+    rdfs:label "Allowed qualifier"@en ;
+    rdfs:label "Povolené podheslo"@cs .
+
+meshcz:scheme
+    a skos:ConceptScheme ;
+    skos:prefLabel "MeSH-CZ Categories"@en ;
+    skos:prefLabel "MeSH-CZ Kategorie"@cs ;
+    skos:hasTopConcept
+        meshcz:A ,
+        meshcz:B ,
+        meshcz:C ,
+        meshcz:D ,
+        meshcz:E ,
+        meshcz:F ,
+        meshcz:G ,
+        meshcz:H ,
+        meshcz:I ,
+        meshcz:J ,
+        meshcz:K ,
+        meshcz:L ,
+        meshcz:M ,
+        meshcz:N ,
+        meshcz:V ,
+        meshcz:Y ,
+        meshcz:Z .
+
+meshcz:A
+    a skos:Concept ;
+    skos:notation "A" ;
+    skos:prefLabel "Anatomy"@en ;
+    skos:prefLabel "Anatomie"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:B
+    a skos:Concept ;
+    skos:notation "B" ;
+    skos:prefLabel "Organisms"@en ;
+    skos:prefLabel "Organismy"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:C
+    a skos:Concept ;
+    skos:notation "C" ;
+    skos:prefLabel "Diseases"@en ;
+    skos:prefLabel "Nemoci"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:D
+    a skos:Concept ;
+    skos:notation "D" ;
+    skos:prefLabel "Chemicals and Drugs"@en ;
+    skos:prefLabel "Chemikálie a léčiva"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:E
+    a skos:Concept ;
+    skos:notation "E" ;
+    skos:prefLabel "Analytical, Diagnostic and Therapeutic Techniques and Equipment"@en ;
+    skos:prefLabel "Analytické, diagnostické a terapeutické techniky a přístroje"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:F
+    a skos:Concept ;
+    skos:notation "F" ;
+    skos:prefLabel "Psychiatry and Psychology"@en ;
+    skos:prefLabel "Psychiatrie a psychologie"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:G
+    a skos:Concept ;
+    skos:notation "G" ;
+    skos:prefLabel "Phenomena and Processes"@en ;
+    skos:prefLabel "Jevy a procesy"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:H
+    a skos:Concept ;
+    skos:notation "H" ;
+    skos:prefLabel "Disciplines and Occupations"@en ;
+    skos:prefLabel "Obory a povolání"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:I
+    a skos:Concept ;
+    skos:notation "I" ;
+    skos:prefLabel "Anthropology, Education, Sociology and Social Phenomena"@en ;
+    skos:prefLabel "Antropologie, vzdělávání, sociologie a sociální jevy"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:J
+    a skos:Concept ;
+    skos:notation "J" ;
+    skos:prefLabel "Technology, Industry, Agriculture"@en ;
+    skos:prefLabel "Technologie, průmysl a zemědělství"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:K
+    a skos:Concept ;
+    skos:notation "K" ;
+    skos:prefLabel "Humanities"@en ;
+    skos:prefLabel "Humanitní vědy"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:L
+    a skos:Concept ;
+    skos:notation "L" ;
+    skos:prefLabel "Information Science"@en ;
+    skos:prefLabel "Informační vědy"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:M
+    a skos:Concept ;
+    skos:notation "M" ;
+    skos:prefLabel "Named Groups"@en ;
+    skos:prefLabel "Lidé"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:N
+    a skos:Concept ;
+    skos:notation "N" ;
+    skos:prefLabel "Health Care"@en ;
+    skos:prefLabel "Zdravotní péče"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:V
+    a skos:Concept ;
+    skos:notation "V" ;
+    skos:prefLabel "Publication Characteristics"@en ;
+    skos:prefLabel "Publikační charakteristiky"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:Y
+    a skos:Concept ;
+    skos:notation "Y" ;
+    skos:prefLabel "Qualifiers (Subheadings)"@en ;
+    skos:prefLabel "Kvalifikátory (podhesla)"@cs ;
+    skos:topConceptOf meshcz:scheme .
+
+meshcz:Z
+    a skos:Concept ;
+    skos:notation "Z" ;
+    skos:prefLabel "Geographicals"@en ;
+    skos:prefLabel "Geografická místa"@cs ;
+    skos:topConceptOf meshcz:scheme .

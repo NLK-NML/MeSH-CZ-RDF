@@ -1,5 +1,5 @@
 ### Conversion of MeSH *rest* dataset [with translation] to SKOS dataset
-##  - version 1.0.6 2026-01-26
+##  - version 1.0.7 2026-01-27
 ## Run the query - using either method:
 # a. Copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
 #  tdb2_tdbquery --loc=databases/mesh --query=mesh-rest-to-skos.rq --time > mesh-skos-rest.ttl
@@ -26,6 +26,8 @@ CONSTRUCT {
 
   ?d skos:scopeNote ?scopeNote .
   ?d skos:scopeNote ?tscopeNote .
+
+  ?d skos:notation ?treeNo .
 
   ?d skos:note ?annotation .
   ?d skos:note ?tannotation .
@@ -55,6 +57,13 @@ WHERE {
   FILTER NOT EXISTS { ?d meshv:active false }
   ?d meshv:preferredConcept ?c .
   FILTER NOT EXISTS { ?c meshv:active false }
+
+  # Tree number for notation
+  OPTIONAL {
+    ?d meshv:treeNumber ?tn .
+    FILTER NOT EXISTS { ?tn meshv:active false }
+    ?tn rdfs:label ?treeNo
+  }
 
   OPTIONAL { ?c meshv:term ?t .
              ?t meshv:prefLabel ?label }

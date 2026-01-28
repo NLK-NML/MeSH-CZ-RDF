@@ -1,4 +1,4 @@
-# Custom MeSH patches
+# Custom MeSH patches - version 1.0.0
 PREFIX mesh:   <http://id.nlm.nih.gov/mesh/>
 PREFIX meshv:  <http://id.nlm.nih.gov/mesh/vocab#>
 PREFIX mesht:  <http://www.medvik.cz/schema/mesh/vocab/#>
@@ -6,6 +6,8 @@ PREFIX meshcz: <http://mesh.medvik.cz/meshcz/>
 PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
+PREFIX skosext: <http://purl.org/finnonto/schema/skosext#>
+PREFIX owl:    <http://www.w3.org/2002/07/owl#>
 
 meshcz:allowedQualifier
     a rdf:Property ;
@@ -156,3 +158,45 @@ meshcz:Z
     skos:prefLabel "Geographicals"@en ;
     skos:prefLabel "Geografická místa"@cs ;
     skos:topConceptOf meshcz:scheme .
+
+meshv:TopicalDescriptor
+  a owl:Class ;
+  rdfs:subClassOf skos:Concept ;
+  rdfs:label "Topical Descriptor"@en ;
+  rdfs:label "Tematické heslo"@cs .
+
+meshv:PublicationType
+  a owl:Class ;
+  rdfs:subClassOf skos:Concept ;
+  rdfs:label "Publication Type"@en ;
+  rdfs:label "Publikační typ"@cs .
+
+meshv:CheckTag
+  a owl:Class ;
+  rdfs:subClassOf skos:Concept ;
+  rdfs:label "Check Tag"@en ;
+  rdfs:label "Check tag"@cs .
+
+meshv:GeographicalDescriptor
+  a owl:Class ;
+  rdfs:subClassOf skos:Concept ;
+  rdfs:label "Geographical Descriptor"@en ;
+  rdfs:label "Geografické heslo"@cs .
+
+meshv:Qualifier
+  a owl:Class ;
+  rdfs:subClassOf skos:Concept ;
+  rdfs:label "Subheading"@en ;
+  rdfs:label "Podheslo"@cs .
+
+meshv:Qualifier
+  a owl:Class ;
+  rdfs:subClassOf skos:Concept ;
+  rdfs:label "Subheading"@en ;
+  rdfs:label "Podheslo"@cs .
+
+skosext:DeprecatedConcept
+  a owl:Class ;
+  rdfs:subClassOf skos:Concept ;
+  rdfs:label "Deprecated Concept"@en ;
+  rdfs:label "Zastaralý koncept"@cs .

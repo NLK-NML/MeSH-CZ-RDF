@@ -1,5 +1,5 @@
 ### Conversion of MeSH *base* to SKOS format
-##  - version 1.1.0 2026-01-27
+##  - version 1.1.1 2026-01-28
 ## Run the query - using either method:
 # a. Copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
 #  tdb2_tdbquery --loc=databases/mesh --query=mesh-base-to-skos.rq --time > mesh-skos-base.ttl
@@ -14,6 +14,8 @@ PREFIX meshcz: <http://mesh.medvik.cz/meshcz/>
 PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
+PREFIX skosext: <http://purl.org/finnonto/schema/skosext#>
+PREFIX owl:    <http://www.w3.org/2002/07/owl#>
 
 CONSTRUCT {
   # Descriptor triples
@@ -27,6 +29,9 @@ CONSTRUCT {
      skos:exactMatch ?exactMatch ;
      skos:notation ?treeNo ;
      skos:inScheme mesh: .
+
+  ?d owl:deprecated ?deprecated .
+  ?d a ?depconcept .
 
   ?topConcept skos:narrower ?d .
 
@@ -52,10 +57,17 @@ WHERE {
   }
 
   ?d rdf:type ?type .
-  FILTER NOT EXISTS { ?d meshv:active false }
+  ?d meshv:identifier ?id .
+
+  # Deprecation binding
+  OPTIONAL {
+    ?d meshv:active false .
+    BIND(true AS ?deprecated)
+    BIND(skosext:DeprecatedConcept AS ?depconcept)
+  }
+
   ?d meshv:preferredConcept ?c .
   FILTER NOT EXISTS { ?c meshv:active false }
-  ?d meshv:identifier ?id .
 
   # Exact match link
   BIND(IRI(CONCAT("https://www.medvik.cz/link/", ?id)) AS ?exactMatch)

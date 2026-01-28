@@ -1,5 +1,5 @@
 ### Conversion of MeSH *rest* to SKOS format
-##  - version 1.0.7 2026-01-27
+##  - version 1.0.8 2026-01-28
 ## Run the query - using either method:
 # a. Copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
 #  tdb2_tdbquery --loc=databases/mesh --query=mesh-rest-to-skos.rq --time > mesh-skos-rest.ttl
@@ -56,8 +56,6 @@ WHERE {
   }
 
   ?d rdf:type ?type .
-  FILTER NOT EXISTS { ?d meshv:active false }
-
   ?d meshv:preferredConcept ?c .
   FILTER NOT EXISTS { ?c meshv:active false }
 

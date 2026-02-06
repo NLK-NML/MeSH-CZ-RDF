@@ -1,11 +1,7 @@
 ### Conversion of MeSH *SCR* to SKOS format
-##  - version 1.0.7 2026-01-27
-## Run the query - using either method:
-# a. Copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
+##  - version 1.0.8 2026-02-06
+## Run the query - copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
 #  tdb2_tdbquery --loc=databases/mesh --query=mesh-scr-to-skos.rq --time > mesh-skos-scr.ttl
-##  Or
-# b. Copy this file to a dir where the MeSH nq gzipped dataset is located and run:
-#  arq --query=mesh-scr-to-skos.rq --data=meshcz.nq.gz --time > mesh-skos-scr.ttl
 #
 PREFIX mesh:  <http://id.nlm.nih.gov/mesh/>
 PREFIX meshv: <http://id.nlm.nih.gov/mesh/vocab#>

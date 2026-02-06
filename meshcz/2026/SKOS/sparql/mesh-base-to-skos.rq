@@ -1,5 +1,5 @@
 ### Conversion of MeSH *base* to SKOS format
-##  - version 1.1.1 2026-01-28
+##  - version 1.1.2 2026-02-06
 ## Run the query - using either method:
 # a. Copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
 #  tdb2_tdbquery --loc=databases/mesh --query=mesh-base-to-skos.rq --time > mesh-skos-base.ttl
@@ -35,9 +35,6 @@ CONSTRUCT {
 
   ?topConcept skos:narrower ?d .
 
-  mesh: a skos:ConceptScheme ;
-        skos:prefLabel "Medical Subject Headings 2026 CZ"@en ;
-        skos:prefLabel "Medical Subject Headings 2026 CZ"@cs .
 }
 WHERE {
 

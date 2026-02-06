@@ -1,11 +1,7 @@
 ### Conversion of MeSH *qualifiers* to SKOS format
-##  - version 1.0.1 2026-01-27
-## Run the query - using either method:
-# a. Copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
+##  - version 1.0.1 2026-02-06
+## Run the query - copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
 #  tdb2_tdbquery --loc=databases/mesh --query=mesh-qual-to-skos.rq --time > mesh-skos-qual.ttl
-##  Or
-# b. Copy this file to a dir where the MeSH nq gzipped dataset is located and run:
-#  arq --query=mesh-qual-to-skos.rq --data=meshcz.nq.gz --time > mesh-skos-qual.ttl
 #
 PREFIX mesh:   <http://id.nlm.nih.gov/mesh/>
 PREFIX meshv:  <http://id.nlm.nih.gov/mesh/vocab#>

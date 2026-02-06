@@ -1,0 +1,121 @@
+### Conversion of MeSH *base* to SKOS format
+##  - version 1.1.2 2026-02-06
+## Run the query - copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
+#  tdb2_tdbquery --loc=databases/mesh --query=mesh-base-to-skos.rq --time > mesh-skos-base.ttl
+#
+PREFIX mesh:   <http://id.nlm.nih.gov/mesh/>
+PREFIX meshv:  <http://id.nlm.nih.gov/mesh/vocab#>
+PREFIX mesht:  <http://www.medvik.cz/schema/mesh/vocab/#>
+PREFIX meshfr: <http://mesh.inserm.fr/link/>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
+PREFIX skosext: <http://purl.org/finnonto/schema/skosext#>
+PREFIX owl:    <http://www.w3.org/2002/07/owl#>
+
+CONSTRUCT {
+  # Descriptor triples
+  ?d a skos:Concept, ?type ;
+     skos:prefLabel ?plabel, ?tplabel ;
+     skos:broader ?broader ;
+     skos:broader ?topConcept ;
+     skos:narrower ?narrower ;
+     skos:related ?related ;
+     skos:changeNote ?previousIndexing ;
+     skos:exactMatch ?exactMatch ;
+     skos:notation ?treeNo ;
+     skos:inScheme mesh: .
+
+  ?d owl:deprecated ?deprecated .
+  ?d a ?depconcept .
+
+  ?topConcept skos:narrower ?d .
+
+}
+WHERE {
+
+  # Bind the descriptor for testing
+  #BIND(mesh:D001829 AS ?d)
+  #BIND(mesh:D018153 AS ?d)
+  #BIND(mesh:D004232 AS ?d)
+  #BIND(mesh:Q000453 AS ?d)
+  #BIND(mesh:D001829 AS ?d)
+
+  VALUES ?type {
+    meshv:TopicalDescriptor
+    meshv:GeographicalDescriptor
+    meshv:PublicationType
+    meshv:CheckTag
+    meshv:Qualifier
+  }
+
+  ?d rdf:type ?type .
+  ?d meshv:identifier ?id .
+
+  # Deprecation binding
+  OPTIONAL {
+    ?d meshv:active false .
+    BIND(true AS ?deprecated)
+    BIND(skosext:DeprecatedConcept AS ?depconcept)
+  }
+
+  ?d meshv:preferredConcept ?c .
+  FILTER NOT EXISTS { ?c meshv:active false }
+
+  # Exact match link
+  BIND(IRI(CONCAT("https://mesh.inserm.fr/arborescence/?sheetId=", ?id)) AS ?exactMatch)
+
+  # Preferred labels
+  ?d meshv:preferredTerm ?pt .
+  ?pt meshv:prefLabel ?plabel .
+
+  OPTIONAL {
+    ?c mesht:preferredTerm ?ptt .
+    ?ptt mesht:prefLabel ?tplabel
+  }
+
+  # Tree number for notation
+  OPTIONAL {
+    ?d meshv:treeNumber ?tn .
+    FILTER NOT EXISTS { ?tn meshv:active false }
+    ?tn rdfs:label ?treeNo .
+  }
+
+  # Hierarchy
+  OPTIONAL { ?d meshv:broaderDescriptor ?broader
+              FILTER NOT EXISTS { ?broader meshv:active false }
+           }
+  OPTIONAL { ?d meshv:broaderQualifier ?broader
+              FILTER NOT EXISTS { ?broader meshv:active false }
+           }
+  OPTIONAL { ?narrower meshv:broaderDescriptor ?d
+             FILTER NOT EXISTS { ?narrower meshv:active false }
+           }
+  OPTIONAL { ?narrower meshv:broaderQualifier ?d
+             FILTER NOT EXISTS { ?narrower meshv:active false }
+           }
+
+  # Related concepts
+  OPTIONAL { ?d meshv:seeAlso ?related
+             FILTER NOT EXISTS { ?related meshv:active false }
+            }
+
+  # Previous indexing
+  OPTIONAL { ?d meshv:previousIndexing ?previousIndexing }
+
+  # Top-level category derivation
+  OPTIONAL {
+    ?d meshv:treeNumber ?tn .
+    FILTER NOT EXISTS { ?tn meshv:active false }
+    ?tn rdfs:label ?treeNumber .
+    FILTER (STRLEN(?treeNumber) = 3)
+    FILTER NOT EXISTS { ?d meshv:broaderDescriptor ?brd }
+
+    # Extract leading letter
+    BIND(SUBSTR(?treeNumber, 1, 1) AS ?topLetter)
+    BIND(IRI(CONCAT(STR(meshfr:), ?topLetter)) AS ?topConcept)
+  }
+
+}
+
+#LIMIT 10000

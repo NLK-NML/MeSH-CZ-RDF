@@ -1,0 +1,134 @@
+### Conversion of MeSH *rest* to SKOS format
+##  - version 1.0.9 2026-02-06
+## Run the query - copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
+#  tdb2_tdbquery --loc=databases/mesh --query=mesh-rest-to-skos.rq --time > mesh-skos-rest.ttl
+#
+PREFIX mesh:  <http://id.nlm.nih.gov/mesh/>
+PREFIX meshv: <http://id.nlm.nih.gov/mesh/vocab#>
+PREFIX mesht: <http://www.medvik.cz/schema/mesh/vocab/#>
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+
+CONSTRUCT {
+  ?d skos:altLabel ?rlabel .
+  ?d skos:altLabel ?trlabel .
+  ?d skos:altLabel ?clabel .
+  ?d skos:altLabel ?label .
+  ?d skos:altLabel ?tlabel .
+
+  ?d skos:hiddenLabel ?hlabel .
+  ?d skos:hiddenLabel ?hrlabel .
+
+  ?d skos:scopeNote ?scopeNote .
+  ?d skos:scopeNote ?tscopeNote .
+
+  ?d skos:note ?annotation .
+  ?d skos:note ?tannotation .
+
+  ?d skos:editorialNote ?considerAlso .
+  ?d skos:editorialNote ?tconsiderAlso .
+
+  ?d skos:historyNote ?historyNote .
+  ?d skos:historyNote ?thistoryNote .
+
+}
+WHERE {
+
+  # Bind the descriptor for testing
+  #BIND(mesh:D002670 AS ?d)
+  #BIND(mesh:D018153 AS ?d)
+  #BIND(mesh:D004232 AS ?d)
+  #BIND(mesh:Q000453 AS ?d)
+  #BIND(mesh:D001829 AS ?d)
+
+  VALUES ?type {
+    meshv:TopicalDescriptor
+    meshv:GeographicalDescriptor
+    meshv:PublicationType
+    meshv:CheckTag
+    meshv:Qualifier
+  }
+
+  ?d rdf:type ?type .
+  ?d meshv:preferredConcept ?c .
+  FILTER NOT EXISTS { ?c meshv:active false }
+
+  OPTIONAL { ?c meshv:term ?t .
+             ?t meshv:prefLabel ?label }
+
+  OPTIONAL { ?c meshv:term ?t .
+             ?t meshv:altLabel ?hlabel }
+
+  OPTIONAL { ?c mesht:preferredTerm ?ptt .
+             ?ptt mesht:prefLabel ?tplabel }
+
+  OPTIONAL { ?c mesht:term ?tt .
+             ?tt mesht:prefLabel ?tlabel }
+
+  OPTIONAL {
+    ?d meshv:concept ?cc .
+
+    {
+      ?cc meshv:preferredTerm ?rc .
+      ?rc meshv:prefLabel ?rlabel .
+    }
+    UNION
+    {
+      ?cc meshv:term ?rc .
+      ?rc meshv:prefLabel ?rlabel .
+    }
+
+    {
+      ?cc meshv:preferredTerm ?rc .
+      ?rc meshv:altLabel ?hrlabel .
+    }
+    UNION
+    {
+      ?cc meshv:term ?rc .
+      ?rc meshv:altLabel ?hrlabel .
+    }
+
+    {
+      ?cc mesht:preferredTerm ?trc .
+      ?trc mesht:prefLabel ?trlabel .
+    }
+    UNION
+    {
+      ?cc mesht:term ?trc .
+      ?trc mesht:prefLabel ?trlabel .
+    }
+  }
+
+  OPTIONAL {
+    ?d mesht:concept ?cc .
+
+    {
+      ?cc mesht:preferredTerm ?tc .
+      ?tc mesht:prefLabel ?clabel .
+    }
+    UNION
+    {
+      ?cc mesht:term ?tc .
+      ?tc mesht:prefLabel ?clabel .
+    }
+  }
+
+  # Scope notes
+  OPTIONAL { ?c meshv:scopeNote ?scopeNote }
+  OPTIONAL { ?c mesht:scopeNote ?tscopeNote }
+
+  # Annotations
+  OPTIONAL { ?d meshv:annotation ?annotation }
+  OPTIONAL { ?d mesht:annotation ?tannotation }
+
+  # ConsiderAlso / editorial notes
+  OPTIONAL { ?d meshv:considerAlso ?considerAlso }
+  OPTIONAL { ?d mesht:considerAlso ?tconsiderAlso }
+
+  # History notes
+  OPTIONAL { ?d meshv:historyNote ?historyNote }
+  OPTIONAL { ?d mesht:historyNote ?thistoryNote }
+
+}
+#LIMIT 10000

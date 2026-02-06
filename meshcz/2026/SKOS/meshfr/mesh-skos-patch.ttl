@@ -19,7 +19,7 @@ meshfr:allowedQualifier
     rdfs:domain skos:Concept ;
     rdfs:range  skos:Concept ;
     rdfs:label "Allowed qualifier"@en ;
-    rdfs:label "Povolené podheslo"@fr .
+    rdfs:label "Allowed qualifier"@fr .
 
 meshfr:scheme
     a skos:ConceptScheme ;

@@ -16,6 +16,7 @@ CONSTRUCT {
   ?d skos:altLabel ?clabel .
   ?d skos:altLabel ?label .
   ?d skos:altLabel ?tlabel .
+  ?d skos:altLabel ?cclabel .
 
   ?d skos:hiddenLabel ?hlabel .
   ?d skos:hiddenLabel ?hrlabel .
@@ -36,8 +37,8 @@ CONSTRUCT {
 WHERE {
 
   # Bind the descriptor for testing
-  #BIND(mesh:D002670 AS ?d)
-  #BIND(mesh:D018153 AS ?d)
+  #BIND(mesh:D000086582 AS ?d)
+  #BIND(mesh:D010949 AS ?d)
   #BIND(mesh:D004232 AS ?d)
   #BIND(mesh:Q000453 AS ?d)
   #BIND(mesh:D001829 AS ?d)
@@ -112,6 +113,12 @@ WHERE {
       ?cc mesht:term ?tc .
       ?tc mesht:prefLabel ?clabel .
     }
+  }
+
+  OPTIONAL {
+    ?c mesht:narrowerConcept|mesht:broaderConcept|mesht:relatedConcept ?ccc .
+    ?ccc mesht:preferredTerm|mesht:term ?cct .
+    ?cct mesht:prefLabel ?cclabel
   }
 
   # Scope notes

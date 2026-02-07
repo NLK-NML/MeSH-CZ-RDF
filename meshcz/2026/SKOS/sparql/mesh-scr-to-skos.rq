@@ -17,6 +17,14 @@ CONSTRUCT {
   ?d skos:hiddenLabel ?talabel .
 }
 WHERE {
+
+  # Bind the descriptor for testing
+  #BIND(mesh:D001829 AS ?d)
+  #BIND(mesh:D018153 AS ?d)
+  #BIND(mesh:D004232 AS ?d)
+  #BIND(mesh:Q000453 AS ?d)
+  #BIND(mesh:D001829 AS ?d)
+
   VALUES ?type {
     meshv:SCR_Anatomy
 	meshv:SCR_Disease

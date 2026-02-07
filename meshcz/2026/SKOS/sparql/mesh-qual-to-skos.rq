@@ -1,19 +1,18 @@
 ### Conversion of MeSH *qualifiers* to SKOS format
-##  - version 1.0.1 2026-02-06
+##  - version 1.0.2 2026-02-07
 ## Run the query - copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
 #  tdb2_tdbquery --loc=databases/mesh --query=mesh-qual-to-skos.rq --time > mesh-skos-qual.ttl
 #
 PREFIX mesh:   <http://id.nlm.nih.gov/mesh/>
 PREFIX meshv:  <http://id.nlm.nih.gov/mesh/vocab#>
 PREFIX mesht:  <http://www.medvik.cz/schema/mesh/vocab/#>
-PREFIX meshcz: <http://mesh.medvik.cz/meshcz/>
 PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
 
 CONSTRUCT {
      # skos:definition ?qlabel, ?qtlabel .
-     ?d meshcz:allowedQualifier ?q .
+     ?d mesht:allowedQualifier ?q .
 }
 WHERE {
 

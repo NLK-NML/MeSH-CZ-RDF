@@ -1,5 +1,5 @@
 ### Conversion of MeSH *rest* to SKOS format
-##  - version 1.0.9 2026-02-06
+##  - version 1.1.1 2026-02-09
 ## Run the query - copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
 #  tdb2_tdbquery --loc=databases/mesh --query=mesh-rest-to-skos.rq --time > mesh-skos-rest.ttl
 #
@@ -11,37 +11,30 @@ PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
 
 CONSTRUCT {
-  ?d skos:altLabel ?rlabel .
-  ?d skos:altLabel ?trlabel .
-  ?d skos:altLabel ?clabel .
-  ?d skos:altLabel ?label .
-  ?d skos:altLabel ?tlabel .
-  ?d skos:altLabel ?cclabel .
 
-  ?d skos:hiddenLabel ?hlabel .
-  ?d skos:hiddenLabel ?hrlabel .
+  ?d skos:altLabel ?palabel, ?alabel, ?clabel .
 
-  ?d skos:scopeNote ?scopeNote .
-  ?d skos:scopeNote ?tscopeNote .
+  ?d skos:altLabel ?talabel, ?ptlabel .
 
-  ?d skos:note ?annotation .
-  ?d skos:note ?tannotation .
+  ?d skos:hiddenLabel ?hlabel, ?hclabel .
 
-  ?d skos:editorialNote ?considerAlso .
-  ?d skos:editorialNote ?tconsiderAlso .
+  ?d skos:scopeNote ?scopeNote, ?tscopeNote .
 
-  ?d skos:historyNote ?historyNote .
-  ?d skos:historyNote ?thistoryNote .
+  ?d skos:note ?annotation, ?tannotation .
+
+  ?d skos:editorialNote ?considerAlso, ?tconsiderAlso .
+
+  ?d skos:historyNote ?historyNote, ?thistoryNote .
 
 }
 WHERE {
 
   # Bind the descriptor for testing
   #BIND(mesh:D000086582 AS ?d)
-  #BIND(mesh:D010949 AS ?d)
+  #BIND(mesh:D017239 AS ?d)
+  #BIND(mesh:D000077102 AS ?d)
   #BIND(mesh:D004232 AS ?d)
-  #BIND(mesh:Q000453 AS ?d)
-  #BIND(mesh:D001829 AS ?d)
+  #BIND(mesh:D000077102 AS ?d)
 
   VALUES ?type {
     meshv:TopicalDescriptor
@@ -55,70 +48,52 @@ WHERE {
   ?d meshv:preferredConcept ?c .
   FILTER NOT EXISTS { ?c meshv:active false }
 
-  OPTIONAL { ?c meshv:term ?t .
-             ?t meshv:prefLabel ?label }
-
-  OPTIONAL { ?c meshv:term ?t .
-             ?t meshv:altLabel ?hlabel }
-
-  OPTIONAL { ?c mesht:preferredTerm ?ptt .
-             ?ptt mesht:prefLabel ?tplabel }
-
-  OPTIONAL { ?c mesht:term ?tt .
-             ?tt mesht:prefLabel ?tlabel }
+  OPTIONAL {
+    ?c meshv:term ?ptc .
+    ?ptc meshv:prefLabel ?ptlabel
+  }
 
   OPTIONAL {
-    ?d meshv:concept ?cc .
+    ?c mesht:term ?ctt .
+    ?ctt mesht:prefLabel ?talabel
+  }
 
+  OPTIONAL {
+    ?c meshv:narrowerConcept|meshv:broaderConcept|meshv:relatedConcept ?npc .
     {
-      ?cc meshv:preferredTerm ?rc .
-      ?rc meshv:prefLabel ?rlabel .
+      ?npc meshv:preferredTerm ?npct .
+      ?npct meshv:prefLabel ?alabel
     }
     UNION
     {
-      ?cc meshv:term ?rc .
-      ?rc meshv:prefLabel ?rlabel .
-    }
-
-    {
-      ?cc meshv:preferredTerm ?rc .
-      ?rc meshv:altLabel ?hrlabel .
-    }
-    UNION
-    {
-      ?cc meshv:term ?rc .
-      ?rc meshv:altLabel ?hrlabel .
-    }
-
-    {
-      ?cc mesht:preferredTerm ?trc .
-      ?trc mesht:prefLabel ?trlabel .
-    }
-    UNION
-    {
-      ?cc mesht:term ?trc .
-      ?trc mesht:prefLabel ?trlabel .
+      ?npc mesht:preferredTerm ?npctt .
+      ?npctt mesht:prefLabel ?alabel
     }
   }
 
   OPTIONAL {
-    ?d mesht:concept ?cc .
+    ?c mesht:narrowerConcept|mesht:broaderConcept|mesht:relatedConcept ?ncc .
+    ?ncc mesht:preferredTerm ?nccp .
+    ?nccp mesht:prefLabel ?clabel
 
-    {
-      ?cc mesht:preferredTerm ?tc .
-      ?tc mesht:prefLabel ?clabel .
+    OPTIONAL {
+      ?ncc mesht:term ?ncct .
+      ?ncct mesht:prefLabel ?hclabel
     }
-    UNION
-    {
-      ?cc mesht:term ?tc .
-      ?tc mesht:prefLabel ?clabel .
-    }
+
   }
 
   OPTIONAL {
-    ?c mesht:narrowerConcept|mesht:broaderConcept|mesht:relatedConcept ?ccc .
-    ?ccc mesht:preferredTerm|mesht:term ?cct .
-    ?cct mesht:prefLabel ?cclabel
+    ?c meshv:narrowerConcept|meshv:broaderConcept|meshv:relatedConcept ?nc .
+    {
+      ?nc meshv:preferredTerm|meshv:term ?ncnp .
+      ?ncnp meshv:altLabel ?hlabel
+    }
+    UNION
+    {
+      ?nc mesht:term ?ncnp .
+      ?ncnp mesht:prefLabel ?hlabel
+    }
   }
 
   # Scope notes
@@ -139,3 +114,4 @@ WHERE {
 
 }
 #LIMIT 10000
+

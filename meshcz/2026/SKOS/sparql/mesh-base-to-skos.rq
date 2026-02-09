@@ -1,5 +1,5 @@
 ### Conversion of MeSH *base* to SKOS format
-##  - version 1.1.3 2026-02-07
+##  - version 1.1.4 2026-02-09
 ## Run the query - copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
 #  tdb2_tdbquery --loc=databases/mesh --query=mesh-base-to-skos.rq --time > mesh-skos-base.ttl
 #
@@ -17,6 +17,7 @@ CONSTRUCT {
   # Descriptor triples
   ?d a skos:Concept, ?type ;
      skos:prefLabel ?plabel, ?tplabel ;
+     skos:hiddenLabel ?ctlabel ;
      skos:broader ?broader ;
      skos:broader ?topConcept ;
      skos:narrower ?narrower ;
@@ -37,7 +38,7 @@ CONSTRUCT {
 WHERE {
 
   # Bind the descriptor for testing
-  #BIND(mesh:D001829 AS ?d)
+  #BIND(mesh:D000086582 AS ?d)
   #BIND(mesh:D018153 AS ?d)
   #BIND(mesh:D004232 AS ?d)
   #BIND(mesh:Q000453 AS ?d)
@@ -69,7 +70,7 @@ WHERE {
 
   # Extra links
   BIND(IRI(CONCAT(STR("https://medvik.cz/link/"), ?id)) AS ?extraLinkMedvik)
-  
+
   BIND(IRI(CONCAT(STR("https://mesh.inserm.fr/arborescence/?sheetId="), ?id)) AS ?extraLinkInserm)
 
   # Preferred labels
@@ -79,6 +80,11 @@ WHERE {
   OPTIONAL {
     ?c mesht:preferredTerm ?ptt .
     ?ptt mesht:prefLabel ?tplabel
+  }
+
+  OPTIONAL {
+    ?c meshv:preferredTerm|meshv:term ?ct .
+    ?ct meshv:altLabel ?ctlabel
   }
 
   # Tree number for notation

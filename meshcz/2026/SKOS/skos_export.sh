@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
+# set -x   # uncomment for debug tracing
 
 DB="$1"
 if [ -z "$DB" ]; then

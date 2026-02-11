@@ -23,11 +23,11 @@ CONSTRUCT {
      skos:narrower ?narrower ;
      skos:related ?related ;
      skos:changeNote ?previousIndexing ;
-     skos:exactMatch ?exactMatchBrowser ;
      skos:exactMatch ?exactMatchRdf ;
      skos:notation ?treeNo ;
      skos:inScheme mesh: .
 
+  ?d mesht:extUrl ?extraLinkBrowser .
   ?d mesht:extUrl ?extraLinkMedvik .
   ?d mesht:extUrl ?extraLinkInserm .
 
@@ -69,9 +69,9 @@ WHERE {
   # Exact match links
   BIND(IRI(CONCAT(STR(mesh:), ?id)) AS ?exactMatchRdf)
 
-  BIND(IRI(CONCAT(STR("https://meshb.nlm.nih.gov/record/ui?ui="), ?id)) AS ?exactMatchBrowser)
-
   # Extra links
+  BIND(IRI(CONCAT(STR("https://meshb.nlm.nih.gov/record/ui?ui="), ?id)) AS ?extraLinkBrowser)
+
   BIND(IRI(CONCAT(STR("https://medvik.cz/link/"), ?id)) AS ?extraLinkMedvik)
 
   BIND(IRI(CONCAT(STR("https://mesh.inserm.fr/arborescence/?sheetId="), ?id)) AS ?extraLinkInserm)

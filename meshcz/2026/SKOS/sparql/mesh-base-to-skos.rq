@@ -1,5 +1,5 @@
 ### Conversion of MeSH *base* to SKOS format
-##  - version 1.1.4 2026-02-09
+##  - version 1.1.5 2026-02-11
 ## Run the query - copy this file to Apache Jena data dir, STOP Fuseki instance, and run:
 #  tdb2_tdbquery --loc=databases/mesh --query=mesh-base-to-skos.rq --time > mesh-skos-base.ttl
 #
@@ -23,7 +23,8 @@ CONSTRUCT {
      skos:narrower ?narrower ;
      skos:related ?related ;
      skos:changeNote ?previousIndexing ;
-     skos:exactMatch ?exactMatch ;
+     skos:exactMatch ?exactMatchBrowser ;
+     skos:exactMatch ?exactMatchRdf ;
      skos:notation ?treeNo ;
      skos:inScheme mesh: .
 
@@ -65,8 +66,10 @@ WHERE {
   ?d meshv:preferredConcept ?c .
   FILTER NOT EXISTS { ?c meshv:active false }
 
-  # Exact match link
-  BIND(IRI(CONCAT(STR(mesh:), ?id)) AS ?exactMatch)
+  # Exact match links
+  BIND(IRI(CONCAT(STR(mesh:), ?id)) AS ?exactMatchRdf)
+
+  BIND(IRI(CONCAT(STR("https://meshb.nlm.nih.gov/record/ui?ui="), ?id)) AS ?exactMatchBrowser)
 
   # Extra links
   BIND(IRI(CONCAT(STR("https://medvik.cz/link/"), ?id)) AS ?extraLinkMedvik)

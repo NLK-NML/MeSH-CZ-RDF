@@ -1,5 +1,5 @@
 # Custom MeSH SKOS patches
-##  - version 1.1.0 2026-02-07
+##  - version 1.1.1 2026-02-11
 PREFIX mesh:   <http://id.nlm.nih.gov/mesh/>
 PREFIX meshv:  <http://id.nlm.nih.gov/mesh/vocab#>
 PREFIX mesht:  <http://www.medvik.cz/schema/mesh/vocab/#>
@@ -26,10 +26,10 @@ mesht:allowedQualifier
     
 mesht:extUrl
     a rdf:Property ;
-    rdfs:label "Related record"@en ;
-    rdfs:label "Související záznam"@cs ;
-    rdfs:label "Affichage associé"@fr .
-  
+    rdfs:label "Related resource"@en ;
+    rdfs:label "Související zdroj"@cs ;
+    rdfs:label "Ressource connexe"@fr .
+
 meshx:scheme
     a skos:ConceptScheme ;
     skos:prefLabel "MeSH Categories"@en ;
